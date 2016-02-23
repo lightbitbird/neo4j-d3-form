@@ -1,0 +1,57 @@
+@(friends: Form[controllers.CaseFriendList], person:neo4j.models.Person)(implicit flash: Flash, messages: Messages, request: play.api.mvc.Request[Any], lang: Lang)
+
+@import neo4j.models.Person
+@import scala.collection.JavaConversions._
+@import helper._
+
+@main(title = "PlayFramework SpringData Neo4j Plugin by @SebasthSeppel") {
+
+    <div class="container">
+        <div class="content">
+            <div class="page-header">
+                <h2>PlayFramework and Spring Data Neo4j</h2>
+            </div>
+            <div class="row">
+                <div class="actions">
+                  ID: @person.getId Name: @person.getName Nickname: @person.getNickname
+                </div>
+                <div>
+					@helper.form(routes.FriendRelationController.postEdit(person.getId)) {
+                    <fieldset>
+                        <legend>Here are some objects/relations we just created</legend>
+			                    <div class="actions">
+			                        <input type="submit" class="btn btn-primary" value="Flush">
+			                         <a href="/persons" class="btn btn-danger">Back</a>
+			                    </div>
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                   <th> </th>
+                                   <th>ID</th>
+                                   <th>友人名</th>
+                                   <th>関係ID</th>
+                                   <th>スター☆</th>
+                                   <th>コメント</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            @helper.repeat(friends("list"), min=1) { friend => 
+                                <tr>
+                                    <td>@helper.checkbox(friend("checked"), 'label_ -> "")</td>
+                                    <td>@helper.inputText(friend("id"), 'label_ -> "", 'size -> 10, 'readOnly -> true)</td>
+                                    <td>@helper.inputText(friend("name"), 'label_ -> "", 'size -> 30)</td>
+                                    <td>@helper.inputText(friend("relationId"), 'label_ -> "", 'size -> 10, 'readOnly -> true)</td>
+                                    <td>@helper.inputText(friend("stars"), 'label_ -> "", 'size -> 3)</td>
+                                    <td>@helper.inputText(friend("comment"), 'label_ -> "", 'size -> 50)</td>
+                                </tr>
+                            }
+                            </tbody>
+                        </table>
+                    </fieldset>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+}

@@ -1,0 +1,54 @@
+@(persons: java.util.List[neo4j.models.Person], path: java.util.List[neo4j.models.Person])(implicit request: play.api.mvc.Request[Any], lang: Lang)
+
+@import neo4j.models.Person
+@import scala.collection.JavaConversions._
+@main(title = "PlayFramework SpringData Neo4j Plugin by @SebasthSeppel") {
+
+    <div class="container">
+        <div class="content">
+            <div class="page-header">
+                <h2>PlayFramework and Spring Data Neo4j</h2>
+            </div>
+            <div class="row">
+                <div>
+                    <fieldset>
+                        <legend>Here are some objects/relations we just created</legend>
+                                   <div class="row">
+                                    <li><a href="/persons/create">交友グラフ情報登録</a></li>
+                                 </div>
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                   <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th>knows</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            @for(person <- persons) {
+                                <tr>
+                                    <td>@person.getId()</td>
+                                    <td><a href="persons/edit/@person.getId()">@person.getName()</a></td>
+                                    <td>@person.getEmail()</td>
+                                    <td>@person.getNickname()</td>
+                                    <td>@for(other <- person.personKnows) {
+                                        @other.getName() }</td>
+                                </tr>
+                            }
+                            </tbody>
+                        </table>
+                        <legend>And the path from @persons.get(0).getName() to @persons.get(persons.size -1).getName()</legend>
+                        <ul class="breadcrumb">
+                        @for(pathPerson <- path) {
+                            <li><a href="#">@pathPerson.getName()</a> </li>
+                        }
+                        </ul>
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}

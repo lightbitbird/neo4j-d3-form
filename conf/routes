@@ -1,0 +1,25 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET     /                               controllers.PersonController.index
+
+# Person
+GET     /persons                        controllers.PersonController.personList
+GET     /persons/create                 controllers.PersonController.create
+GET     /persons/edit/:id               controllers.PersonController.edit(id: Long)
+POST    /persons/edit/:id/edit          controllers.PersonController.postEdit(id: Long)
+GET     /persons/edit/:id/delete        controllers.PersonController.delete(id: Long)
+POST    /persons/postCreate             controllers.PersonController.postCreate
+
+# Friend Relationship
+GET     /friends/:id                     controllers.FriendRelationController.friendList(id: Long)
+#GET     /friends/create                 controllers.FriendRelationController.create
+#GET     /friends/edit/:id               controllers.FriendRelationController.edit(id: Long)
+POST    /friends/edit/:id/edit          controllers.FriendRelationController.postEdit(id: Long)
+#GET     /friends/edit/:id/delete        controllers.FriendRelationController.delete(id: Long)
+#POST    /friends/postCreate             controllers.FriendRelationController.postCreate
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file                   controllers.Assets.versioned(path="/public", file: Asset)

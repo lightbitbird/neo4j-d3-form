@@ -1,0 +1,58 @@
+@(id: Long, personForm: Form[controllers.CasePerson], mode: String = "create")(implicit flash: Flash, messages: Messages)
+
+@import neo4j.models.Person
+@import scala.collection.JavaConversions._
+@import helper._
+
+@main(title = "交友グラフ管理システム - 交友情報更新") {
+<div class="row">
+    <div class="container">
+
+        <!-- サイドメニュー -->
+        <div class="hidden-xs col-sm-3 col-md-3 col-lg-3">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <ul class="nav nav-pills nav-stacked">
+                        <li><a href="/persons">交友グラフ情報一覧（検索/更新/削除）</a></li>
+                        <li><a href="/friends/@id">友人関係一覧</a></li>
+                        <li><a href="/persons/create">交友グラフ情報登録</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- コンテンツ -->
+        <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9">
+            <div class="row">
+
+                <!-- 見出し -->
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <h1>交友グラフ情報
+                    @if(mode == "create") {
+                    	登録
+                    	} else {
+                    	更新
+                    	}</h1>
+                </div>
+
+                <!-- フォーム -->
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+					@helper.form(if(id >= 0) { routes.PersonController.postEdit(id) } else {routes.PersonController.postCreate }) {
+                    <fieldset>
+                        <input type="hidden" name="id" value="@id">
+                        @inputText(personForm("name"), '_label -> "名前", 'size -> 30)
+                        @inputText(personForm("email"), '_label -> "メールアドレス",'type -> "email", 'size -> 40)
+                        @inputText(personForm("password"), '_label -> "パスワード", 'size -> 10)
+                        @inputText(personForm("nickname"), '_label -> "ニックネーム", 'size -> 40)
+                    </fieldset>
+                    <div class="actions">
+                        <input type="submit" class="btn btn-primary">
+                        @if(id >= 0) {<a href="/persons/edit/@id/delete" class="btn btn-info">Delete</a>}
+                         <a href="/persons" class="btn btn-danger">キャンセル</a>
+                    </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    }
